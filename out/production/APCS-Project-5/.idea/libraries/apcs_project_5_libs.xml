@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="apcs-project-5-libs">
+    <CLASSES>
+      <root url="file://$USER_HOME$/Downloads/apcs-project-5-libs" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$USER_HOME$/Downloads/apcs-project-5-libs" />
+    </SOURCES>
+    <jarDirectory url="file://$USER_HOME$/Downloads/apcs-project-5-libs" recursive="false" />
+    <jarDirectory url="file://$USER_HOME$/Downloads/apcs-project-5-libs" recursive="false" type="SOURCES" />
+  </library>
+</component>
