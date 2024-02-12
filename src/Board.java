@@ -25,7 +25,7 @@ public class Board {
     public void placePiece(Piece p) throws IllegalArgumentException { // updates the state of the board with the information of the Piece
         if (p instanceof MegaPiece) {
             // validate col and row
-            if (p.getCol() < 1 || p.getCol() > colCount - 1
+            if (p.getCol() < 1 || p.getCol() >= colCount - 1
                     || p.getRow() > rowCount - 1 || p.getRow() < 2) {
                 throw new IllegalArgumentException("Not a valid position for MegaPiece");
             }
@@ -86,77 +86,133 @@ public class Board {
     }
 
     public boolean checkForWin(int player) {
-        int connect = 0;
-        int check = 1;
-        if (player == 2) {
-            check = 2;
+        if (player != 1 && player != 2) {
+            throw new IllegalArgumentException("invalid player, must be 1 or 2");
         }
-        for (int x = 0; x < rowCount; x++) {//x is board[x][-], y is board[-][y]
-            for (int y = 0; y < colCount; y++) {
-                for (int j = -5; j < 5; j++) {
-                    if (y+j < 0 || y+j > colCount - 1) {
-                        continue;
-                    }
-                    if (board[x][y+j] == check) {
-                        connect++;
-                    }
-                    else {
-                        connect = 0;
-                    }
-                    if (connect >= 5) {
-                        return true;
-                    }
-                }
 
-                //vertical
-                connect = 0;
-                for (int j = -5; j < 5; j++) {
-                    if (x+j < 0 || x+j > rowCount - 1) {
-                        continue;
-                    }
-                    if (board[x+j][y] == check) {
-                        connect++;
-                    }
-                    else {
-                        connect = 0;
-                    }
-                    if (connect >= 5) {
+        int color = (player == 1) ? 1 : 2;
+
+        for (int i = 2; i < rowCount - 2; i++) {
+            for (int j = 2; j < colCount - 2; j++) {
+                if (board[i][j] == 0) {
+                    continue;
+                }
+                int valueToCheck = (board[i][j] == 1) ? 1 : 2;
+                // row
+                for (int k = j-2; k < j+2; k++) {
+                    if (board[i][k] == valueToCheck) {
                         return true;
                     }
                 }
-                //diag1
-                connect = 0;
-                for (int j = -5; j < 5; j++) {
-                    if (x+j < 0 || x+j > rowCount - 1
-                            || y+j < 0 || y+j > colCount - 1) {
-                        continue;
-                    }
-                    if (board[x+j][y+j] == check) {
-                        connect++;
-                    }
-                    else {
-                        connect = 0;
-                    }
-                    if (connect >= 5) {
+                // column
+                for (int k = i-2; k < i+2; k++) {
+                    if (board[k][j] == valueToCheck) {
                         return true;
                     }
                 }
-                //diag2
-                connect = 0;
-                for (int j = -5; j < 5; j++) {
-                    if (x + j < 0 || x + j > rowCount - 1
-                            || y - j < 0 || y - j > colCount - 1 ) {
-                        continue;
-                    } else if (board[x + j][y - j] == check) {
-                        connect++;
-                    } else {
-                        connect = 0;
+                // top left to bottom right
+                for (int m = i-2, n = j-2; m < i+2 && n < j+2; m++, n++) {
+                    if (board[m][n] == valueToCheck) {
+                        return true;
                     }
-                    if (connect >= 5) {
+                }
+                // top right to bottom left
+                for (int m = i-2, n = j+2; m < i+2 && n > j-2; m++, n--) {
+                    if (board[m][n] == valueToCheck) {
                         return true;
                     }
                 }
             }
+        }
+
+        return false;
+    }
+
+//    public boolean checkForWin(int player) {
+//        int color = -1;
+//        if (player == 1) {
+//            color = 1;
+//        }
+//        else {
+//            color = 2;
+//        }
+//
+//        int connect = 0;
+//        for (int i = 0; i < colCount; i++) {
+//            for (int j = 0; j < rowCount; j++) {
+//                //vert
+//                for (int k = j; k < rowCount; k++) {
+//                    if (isOutOfBounds(i,k)) {
+//                        continue;
+//                    }
+//                    else if (board[i][k] == color) {
+//                        connect++;
+//                        if (connect == 5) {
+//                            return true;
+//                        }
+//                    }
+//                    else {
+//                        connect = 0;
+//                    }
+//                }
+//                //horiz
+//                connect = 0;
+//                for (int k = i; k < colCount; k++) {
+//                    if (isOutOfBounds(k,j)) {
+//                        continue;
+//                    }
+//                    else if (board[k][j] == color) {
+//                        connect++;
+//                        if (connect == 5) {
+//                            return true;
+//                        }
+//                    }
+//                    else {
+//                        connect = 0;
+//                    }
+//                }
+//                //diag1
+//                connect = 0;
+//                for (int k = i; k < colCount; k++) {
+//                    if (isOutOfBounds(k,k)) {
+//                        continue;
+//                    }
+//                    else if (board[k][k] == color) {
+//                        connect++;
+//                        if (connect == 5) {
+//                            return true;
+//                        }
+//                    }
+//                    else {
+//                        connect = 0;
+//                    }
+//                }
+//                //diag2
+//                for (int k = 0; k < 5; k++) {
+//                    if (isOutOfBounds(i-k,i+k)) {
+//                        continue;
+//                    }
+//                    else if (board[i-k][i+k] == color) {
+//                        connect++;
+//                        if (connect == 5) {
+//                            return true;
+//                        }
+//                    }
+//                    else {
+//                        connect = 0;
+//                    }
+//                }
+//            }
+//        }
+//        return false;
+//    }
+
+    public boolean isOutOfBounds(int x, int y) {
+        if (x < 0 || x >= rowCount) {
+            return true;
+        }
+        else if (y < 0 || y >= colCount) {
+            return true;
         }
         return false;
     }

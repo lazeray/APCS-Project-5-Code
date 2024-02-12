@@ -74,6 +74,8 @@ class BoardTest {
         board.placePiece(new Piece(2, 2, board));
         board.placePiece(new Piece(1, 2, board));
 
+        board.displayAll();
+
         assertTrue(board.checkForWin(2));
     }
 

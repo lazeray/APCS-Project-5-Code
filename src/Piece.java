@@ -45,7 +45,9 @@ public class Piece {
         return column;
     }
     public int getRow() {
-        return (this instanceof MegaPiece) ? this.findRow(column, board) - 1 : this.findRow(column, board);
+        //return (this instanceof MegaPiece) ?
+        //this.findRow(column, board) - 1 : this.findRow(column, board);
+        return this.findRow(column, board);
     }
     public int getColor() {
         return color;
